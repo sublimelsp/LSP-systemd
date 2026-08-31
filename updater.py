@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 import contextlib
 import json
 import os
-from urllib.request import Request as HttpRequest, urlopen
-from shutil import rmtree
 import time
-	  
+from pathlib import Path
+from shutil import rmtree
+from urllib.request import Request as HttpRequest, urlopen
+
+
 class Updater:
-	def __init__(self, server_path, platform, arch):
+	def __init__(self, server_path: Path, platform: str, arch: str):
 		self.server_path = server_path
 		self.platform = platform
 		self.arch = arch
@@ -17,7 +21,7 @@ class Updater:
 		if desired_version == "none":
 			return False
 		
-		os.makedirs(self.server_path, exist_ok=True)
+		self.server_path.mkdir(exist_ok=True)
 
 		version = desired_version if desired_version != "latest" else self.available_version()
 		try:
@@ -40,7 +44,7 @@ class Updater:
 		if desired_version == "none":
 			return False
 
-		is_upgrade = os.path.isfile(self.server_file())
+		is_upgrade = self.server_file().is_file()
 
 		if is_upgrade:
 			next_update_check, version = self.load_metadata()
@@ -96,34 +100,31 @@ class Updater:
 			raise RuntimeError(f"LspSystemd: no prebuilt systemd-lsp binary available for {platform_arch}")
 		return f"{self.repo_url()}/releases/download/{version}/{asset}"
 
-	def server_file(self) -> str:
-		name = os.path.join(self.server_path, "systemd-lsp")
-		if self.platform == "windows":
-			name += ".exe"
-		return name
+	def server_file(self) -> Path:
+		binary_name = "systemd-lsp.exe" if self.platform == "windows" else "systemd-lsp"
+		return self.server_path / binary_name
 
-	def metadata_file(self) -> str:
-		return os.path.join(self.server_path, "update.json")
+	def metadata_file(self) -> Path:
+		return self.server_path / "update.json"
 
-	def load_metadata(self) -> "tuple[int, str]":
+	def load_metadata(self) -> tuple[int, str]:
 		try:
-			with open(self.metadata_file()) as fobj:
-				data = json.load(fobj)
-				return int(data["timestamp"]), data["version"]
+			data = json.loads(self.metadata_file().read_text(encoding='utf-8'))
+			return int(data["timestamp"]), data["version"]
 		except (FileNotFoundError, KeyError, TypeError, ValueError):
 			return 0, ""
 
 	def save_metadata(self, success: bool, version: str) -> bool:
 		next_run_delay = (7 * 24 * 60 * 60) if success else (6 * 60 * 60)
 		try:
-			with open(self.metadata_file(), "w") as fobj:
-				json.dump(
+			self.metadata_file().write_text(
+				json.dumps(
 					{
 						"timestamp": int(time.time()) + next_run_delay,
 						"version": version,
 					},
-					fp=fobj,
 				)
+			)
 			return True
 		except:
-			return False 
+			return False
