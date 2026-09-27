@@ -7,7 +7,6 @@
 *.sublime-workspace export-ignore
 
 pyproject.toml export-ignore
-.python-version export-ignore
 
 *.png export-ignore
 *.jpg export-ignore

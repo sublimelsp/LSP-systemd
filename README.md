@@ -10,8 +10,8 @@ Quadlet `.container`,`.volume`, `.kube`, `.pod`, `.image`, and `.build` unit fil
 
 ## Installation
 
-1. Install [LSP](https://packagecontrol.io/packages/LSP), [Systemd](https://packagecontrol.io/packages/Systemd)
-   (syntax highlighting), and [LSP-systemd](https://packagecontrol.io/packages/LSP-systemd)
+1. Install [LSP](https://packages.sublimetext.com/packages/LSP), [systemd](https://packages.sublimetext.com/packages/systemd)
+   (syntax highlighting), and [LSP-systemd](https://packages.sublimetext.com/packages/LSP-systemd)
    from Package Control.
 2. Restart Sublime Text.
 
