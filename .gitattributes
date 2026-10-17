@@ -1,17 +1,16 @@
 # Excluded from the exported package (Package Control uses `git archive`).
-
-.gitattributes export-ignore
-.gitignore export-ignore
-
+*.gif export-ignore
+*.jpeg export-ignore
+*.jpg export-ignore
+*.png export-ignore
 *.sublime-project export-ignore
 *.sublime-workspace export-ignore
-
-pyproject.toml export-ignore
-
-*.png export-ignore
-*.jpg export-ignore
-*.jpeg export-ignore
-*.gif export-ignore
 *.webp export-ignore
+.gitattributes export-ignore
+/.github/ export-ignore
+.gitignore export-ignore
 images/** export-ignore
+pyproject.toml export-ignore
+/renovate.json export-ignore
 screenshots/** export-ignore
+/tests/ export-ignore
