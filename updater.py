@@ -21,7 +21,7 @@ class Updater:
 		if desired_version == "none":
 			return False
 		
-		self.server_path.mkdir(exist_ok=True)
+		self.server_path.mkdir(parents=True, exist_ok=True)
 
 		version = desired_version if desired_version != "latest" else self.available_version()
 		try:
