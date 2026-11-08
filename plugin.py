@@ -14,7 +14,7 @@ class LspSystemdPlugin(LspPlugin):
 
     @classmethod
     def on_pre_start_async(cls, context: OnPreStartContext) -> None:
-        desired_version = context.configuration.server_version 
+        desired_version = context.configuration.root_settings.get("server_version")
         if desired_version is None or desired_version == "":
             desired_version = "latest"
 
